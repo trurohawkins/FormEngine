@@ -1,0 +1,18 @@
+[submodule "Form"]
+	path = Form
+	url = https://github.com/trurohawkins/Form.git
+[submodule "MOLTN"]
+	path = MOLTN
+	url = https://github.com/trurohawkins/MOLTN.git
+[submodule "OIB"]
+	path = OIB
+	url = https://github.com/trurohawkins/OIB.git
+[submodule "GameCore"]
+	path = GameCore
+	url = https://github.com/trurohawkins/GameCore.git
+[submodule "TUI"]
+	path = TUI
+	url = https://github.com/trurohawkins/TUI.git
+[submodule "AudioMan"]
+	path = AudioMan
+	url = https://github.com/trurohawkins/AudioMan.git
