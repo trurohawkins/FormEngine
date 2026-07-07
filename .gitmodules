@@ -1,6 +1,6 @@
-[submodule "Form"]
-	path = Form
-	url = https://github.com/trurohawkins/Form.git
+[submodule "HelperFuncs"]
+	path = HelperFuncs
+	url = https://github.com/trurohawkins/HelperFuncs.git
 [submodule "MOLTN"]
 	path = MOLTN
 	url = https://github.com/trurohawkins/MOLTN.git
@@ -16,3 +16,7 @@
 [submodule "AudioMan"]
 	path = AudioMan
 	url = https://github.com/trurohawkins/AudioMan.git
+[submodule "Form"]
+	path = Form
+	url = https://github.com/trurohawkins/Form.git
+
