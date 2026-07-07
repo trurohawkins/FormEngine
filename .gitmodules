@@ -1,22 +1,29 @@
 [submodule "HelperFuncs"]
 	path = HelperFuncs
 	url = https://github.com/trurohawkins/HelperFuncs.git
+	branch = main
 [submodule "MOLTN"]
 	path = MOLTN
 	url = https://github.com/trurohawkins/MOLTN.git
+	branch = main
 [submodule "OIB"]
 	path = OIB
 	url = https://github.com/trurohawkins/OIB.git
+	branch = main
 [submodule "GameCore"]
 	path = GameCore
 	url = https://github.com/trurohawkins/GameCore.git
+	branch = main
 [submodule "TUI"]
 	path = TUI
 	url = https://github.com/trurohawkins/TUI.git
+	branch = main
 [submodule "AudioMan"]
 	path = AudioMan
 	url = https://github.com/trurohawkins/AudioMan.git
+	branch = main
 [submodule "Form"]
 	path = Form
 	url = https://github.com/trurohawkins/Form.git
+	branch = master
 
