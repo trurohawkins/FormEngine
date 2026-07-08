@@ -1,5 +1,8 @@
 .PHONY: all clean function
 
+clean:
+	git submodule foreach '$(MAKE) clean'
+
 fclean:
 	git submodule foreach '$(MAKE) fclean'
 
