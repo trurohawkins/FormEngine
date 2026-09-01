@@ -1,0 +1,16 @@
+#ifndef WORLDMANAGER
+#define WORLDMANAGER
+
+bool startWorld(int graphics, int audio);
+void runWorld();
+void formLoop(float delta);
+void formRender();
+void screenChanged(int x, int y);
+bool endWorld();
+
+#define MAX_AUDIO_EVENTS 256
+int addTimedEvent(void (*func)(void *), void *data, double frequency);
+void pauseSet(bool value);
+void clearTimedEvents();
+
+#endif
