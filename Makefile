@@ -83,6 +83,7 @@ $(LIBDIR)libFormEngine.a: form.o cell.o world.o WorldManager.o | $(LIBDIR)
 
 # Compiling
 main.o: main.c
+	cp $(AUDIODIR)lsan.supp .
 	gcc $(CFLAGS) -c main.c -o $@
 
 form.o: $(SRCDIR)form.c $(INCDIR)form.h
@@ -103,9 +104,10 @@ $(LIBDIR):
 # tools
 clean:
 	rm -f *.o *.d
+	git submodule foreach '$(MAKE) clean'
 
 fclean:
-	rm -f $(TARGET) *.o *.d $(LIBDIR)libFormEngine.a 
+	rm -f $(TARGET) *.o *.d $(LIBDIR)libFormEngine.a lsan.supp
 	git submodule foreach '$(MAKE) fclean'
 
 fixTerminal:
