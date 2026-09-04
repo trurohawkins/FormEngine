@@ -1,5 +1,9 @@
-#ifndef WORLDMANAGER
-#define WORLDMANAGER
+#pragma once
+#include "GameCore.h"
+#include "TUI.h"
+#include "AudioMan.h"
+
+#include "view.h"
 
 bool startWorld(int graphics, int audio);
 void runWorld();
@@ -12,5 +16,3 @@ bool endWorld();
 int addTimedEvent(void (*func)(void *), void *data, double frequency);
 void pauseSet(bool value);
 void clearTimedEvents();
-
-#endif

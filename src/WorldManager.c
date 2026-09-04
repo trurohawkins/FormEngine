@@ -1,10 +1,3 @@
-#include "GameCore.h"
-#include "TUI.h"
-#include "AudioMan.h"
-
-#include "form.h"
-#include "cell.h"
-#include "world.h"
 #include "WorldManager.h"
 
 bool runGraphics = true;
@@ -60,6 +53,7 @@ void formLoop(float delta) {
 
 void formRender() {
 	if (runGraphics) {
+		renderView();
 		renderWorld();
 	}
 }

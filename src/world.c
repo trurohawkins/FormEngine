@@ -1,6 +1,3 @@
-#include "GameCore.h"
-#include "form.h"
-#include "cell.h"
 #include "world.h"
 
 World theWorld = {
@@ -8,13 +5,6 @@ World theWorld = {
 	.y = 0,
 	.map = 0
 };
-
-Frame curFrame = {
-	.pos = {0, 0},
-	.dim = {0, 0}
-};
-
-int renderStride[2] = {1, 1};
 
 void makeWorld(int x, int y) {
 	theWorld.x = x;
@@ -24,37 +14,6 @@ void makeWorld(int x, int y) {
 
 World *getWorld() {
 	return &theWorld;
-}
-
-Frame *getFrame() {
-	return &curFrame;
-}
-
-//used for ascii render
-void setRenderStride(int x, int y) {
-	renderStride[0] = x;
-	setTapestryStride(renderStride[0]);
-	renderStride[1] = y;
-}
-
-void setFrameDimension(int x, int y) {
-	curFrame.dim[0] = x;
-	curFrame.dim[1] = y;
-	setNewRender();
-}
-
-void setFramePosition(int x, int y) {
-	int oldX = curFrame.pos[0];
-	int oldY = curFrame.pos[1];
-	curFrame.pos[0] = clamp(x - curFrame.dim[0]/2, 0, theWorld.x - curFrame.dim[0]);
-	curFrame.pos[1] = clamp(y - curFrame.dim[1]/2, 0, theWorld.y - curFrame.dim[1]);
-	if (oldX != curFrame.pos[0] || oldY != curFrame.pos[1]) {
-		setNewRender();
-	}
-}
-
-void moveFrame(int xd, int yd) {
-	setFramePosition(curFrame.pos[0] + curFrame.dim[0]/2  + xd, curFrame.pos[1] + curFrame.dim[1] / 2 + yd);
 }
 
 void freeWorld() {
@@ -128,42 +87,5 @@ Form *checkFormID(int x, int y, int id) {
 		}
 	}
 	return NULL;
-}
-
-int worldXToScreenX(int wx) {
-	return wx + screenX/(2 * renderStride[0]) - curFrame.dim[0]/2;
-}
-
-int worldYToScreenY(int wy) {
-	wy = curFrame.dim[1] - wy;
-	return wy + screenY/(2 * renderStride[1]) - curFrame.dim[1]/2;
-}
-
-void renderWorld() {
-	if (!theWorld.map) {
-		return;
-	}
-	static int visit = 0;
-	visit++;
-	for (int y = 0; y < curFrame.dim[1]; y++) {
-		for (int x = 0; x < curFrame.dim[0]; x++) {
-			int xp = x + curFrame.pos[0];
-			int yp = y + curFrame.pos[1];
-			int w = yp * theWorld.x + xp;
-			Cell c = theWorld.map[w];
-			for (int i = 0; i < FORMS_PER_CELL; i++) {
-				if (c.within[i]) {
-					Nub *skin = findNub(c.within[i], 1);
-					if (skin && skin->data) {
-						RenderObject *rob = skin->data;
-						if (rob->render && rob->lastRender < visit) {
-							rob->lastRender = visit;
-							rob->render(rob->data);
-						}
-					}
-				}						
-			}
-		}
-	}
 }
 

@@ -1,5 +1,3 @@
-#include "GameCore.h"
-#include "form.h"
 #include "cell.h"
 
 bool addToCell(Form *form, Cell *cell) {

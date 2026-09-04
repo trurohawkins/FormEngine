@@ -3,4 +3,5 @@
 #include "form.h"
 #include "cell.h"
 #include "world.h"
+#include "view.h"
 #include "WorldManager.h"

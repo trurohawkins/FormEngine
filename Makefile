@@ -59,6 +59,10 @@ prod: $(TARGET)
 $(TARGET): $(INCDIR)FormEngine.h $(LIBDIR)libFormEngine.a $(RENDERLIB)lib$(RENDERER).a $(RENDERINC)$(RENDERER).h $(AUDIOLIB)lib$(AUDIO).a $(AUDIOINC)$(AUDIO).h $(GAMEINC)GameCore.h $(GAMELIB)libGameCore.a $(OIBINC)OIB.h $(OIBLIB)libOIB.a $(MOLTNLIB)libMoltnCore.a $(MOLTNINC)MoltnCore.h $(HELPERLIB)libHelper.a  $(HELPERINC)helper.h main.o  
 	gcc main.o -o $@ $(LDFLAGS) $(LIBDIR)libFormEngine.a -L$(AUDIOLIB) -l$(AUDIO) -L$(RENDERLIB) -l$(RENDERER) -L$(GAMELIB) -lGameCore -L$(OIBLIB) -lOIB -L$(MOLTNLIB) -lMoltnCore -L$(HELPERLIB) -lHelper $(AUDIOFLAGS) -lm
 
+main.o: main.c constants.h guy.c guy.h move.c move.h
+	cp $(AUDIODIR)lsan.supp .
+	gcc $(CFLAGS) -c main.c -o $@
+
 $(HELPERLIB)libHelper.a:
 	$(MAKE) -C $(HELPERDIR)
 
@@ -78,13 +82,10 @@ $(AUDIOLIB)lib$(AUDIO).a:
 	$(MAKE) -C $(AUDIODIR)
 
 # Static lib
-$(LIBDIR)libFormEngine.a: form.o cell.o world.o WorldManager.o | $(LIBDIR)
+$(LIBDIR)libFormEngine.a: form.o cell.o world.o view.o WorldManager.o | $(LIBDIR)
 	ar rs $@ $^
 
 # Compiling
-main.o: main.c
-	cp $(AUDIODIR)lsan.supp .
-	gcc $(CFLAGS) -c main.c -o $@
 
 form.o: $(SRCDIR)form.c $(INCDIR)form.h
 	gcc $(CFLAGS) -c $(SRCDIR)form.c -o $@
@@ -94,6 +95,9 @@ cell.o: $(SRCDIR)cell.c $(INCDIR)cell.h
 
 world.o: $(SRCDIR)world.c $(INCDIR)world.h
 	gcc $(CFLAGS) -c $(SRCDIR)world.c -o $@
+
+view.o: $(SRCDIR)view.c $(INCDIR)view.h
+	gcc $(CFLAGS) -c $(SRCDIR)view.c -o $@
 
 WorldManager.o: $(SRCDIR)WorldManager.c $(INCDIR)WorldManager.h
 	gcc $(CFLAGS) -c $(SRCDIR)WorldManager.c -o $@

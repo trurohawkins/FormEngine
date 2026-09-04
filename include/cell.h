@@ -1,6 +1,7 @@
 #ifndef CELL
 #define CELL
 #include <stdio.h>
+#include "form.h"
 
 #define FORMS_PER_CELL 8
 typedef struct {
