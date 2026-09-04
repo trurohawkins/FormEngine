@@ -22,8 +22,3 @@
 	path = AudioMan
 	url = https://github.com/trurohawkins/AudioMan.git
 	branch = main
-[submodule "Form"]
-	path = Form
-	url = https://github.com/trurohawkins/Form.git
-	branch = main
-
