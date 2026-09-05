@@ -1,11 +1,16 @@
 #pragma once
+
+#define CONTENT_SIZE FORMS_PER_CELL * 20
 typedef struct {
-	Form *self;
 	bool on;
+	Form *cursor;
+
+	int contextMenu;
+	char content[CONTENT_SIZE];
 } Editor;
 
 Editor *makeEditor();
-void *renderCursor(void *data);
+void *renderEditor(void *data);
 void setEditMode(Editor *e, bool on);
 void freeEditor(Editor *e);
 void toggleEditMode(void *e, float val);

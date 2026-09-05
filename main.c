@@ -18,6 +18,7 @@ int main(int argc, char **argv) {
 	setRenderStride(2, 1);
 
 	Editor *e = makeEditor();
+	memcpy(e->cursor->pos, spawnPos, sizeof(int) * 2);
 	Form *guy = makeGuy();
 	placeForm(guy, spawnPos[0], spawnPos[1]);
 
