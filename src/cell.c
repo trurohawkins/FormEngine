@@ -20,6 +20,15 @@ bool removeFromCell(Form *form, Cell *cell) {
 	return false;
 }
 
+Form *removeIndexCell(Cell *cell, int index) {
+	if (index >= 0 && index < FORMS_PER_CELL) {
+		Form *f = cell->within[index];
+		cell->within[index] = 0;
+		return f;
+	}
+	return NULL;
+}
+
 bool cellFull(Cell *c) {
 	for (int i = 0; i < FORMS_PER_CELL; i++) {
 		if (!c->within[i]) {

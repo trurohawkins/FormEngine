@@ -23,6 +23,13 @@ typedef struct {
 	Nub *nub;
 } Form;
 
+typedef struct {
+	char *type;
+	Form *(*spawn)(void);
+	void (*delete)(void*);
+} FormRecipe;
+
+
 Form *makeForm(int id);
 Nub *growNub(Form *f);
 Nub *findNub(Form *f, int type);

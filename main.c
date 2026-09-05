@@ -6,6 +6,7 @@
 #include "move.c"
 #include "guy.c"
 Form *(*spawnKit[FORMIDS])(void);
+#include "cookbook.h"
 #include "editor.c"
 
 Editor *e = 0;

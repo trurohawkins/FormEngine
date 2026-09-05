@@ -32,6 +32,15 @@ void *renderGuy(void *data) {
 	asciiRenderForm(data, 40, 223, 184);
 }
 
+void freeGuy(void *form) {
+	Actor *a = findNub(form, 2)->data;
+	a->deleteMe = true;
+	Player *p = checkPlayer(1);
+	removePlayer(p);
+	freePlayer(p);
+	freeForm(form);
+}
+
 Form *makeBlock() {
 	Form *block = makeForm(BLOCK);
 	
