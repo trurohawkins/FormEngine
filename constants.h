@@ -1,8 +1,10 @@
 //Form IDs
-#define GUY 0
+#define CURSOR 0
+#define GUY 1
+#define BLOCK 2
 
 //Nubs
 #define MOVENUB 4
 
-int worldX = 3;
-int worldY = 3;
+int worldX = 20;
+int worldY = 20;

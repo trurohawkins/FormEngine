@@ -113,3 +113,21 @@ void pauseSet(bool value) {
 		}
 	}
 }
+
+void asciiRenderForm(Form *f, uint8_t r, uint8_t g, uint8_t b) {
+	RenderCommand reco = {
+		.type = 0,
+		.index = -1,
+		.layer = 0,
+		.pos = {
+			.x = worldXToScreenX(f->pos[0]),
+			.y = worldYToScreenY(f->pos[1]),
+		},
+	};
+	Color col = {
+		.rgb = {r, g, b},
+	};
+	memcpy(reco.data, &col, sizeof(Color));
+	addRenderCommand(reco);
+}
+

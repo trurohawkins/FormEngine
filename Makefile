@@ -59,7 +59,7 @@ prod: $(TARGET)
 $(TARGET): $(INCDIR)FormEngine.h $(LIBDIR)libFormEngine.a $(RENDERLIB)lib$(RENDERER).a $(RENDERINC)$(RENDERER).h $(AUDIOLIB)lib$(AUDIO).a $(AUDIOINC)$(AUDIO).h $(GAMEINC)GameCore.h $(GAMELIB)libGameCore.a $(OIBINC)OIB.h $(OIBLIB)libOIB.a $(MOLTNLIB)libMoltnCore.a $(MOLTNINC)MoltnCore.h $(HELPERLIB)libHelper.a  $(HELPERINC)helper.h main.o  
 	gcc main.o -o $@ $(LDFLAGS) $(LIBDIR)libFormEngine.a -L$(AUDIOLIB) -l$(AUDIO) -L$(RENDERLIB) -l$(RENDERER) -L$(GAMELIB) -lGameCore -L$(OIBLIB) -lOIB -L$(MOLTNLIB) -lMoltnCore -L$(HELPERLIB) -lHelper $(AUDIOFLAGS) -lm
 
-main.o: main.c constants.h guy.c guy.h move.c move.h
+main.o: main.c constants.h guy.c guy.h move.c move.h editor.c editor.h
 	cp $(AUDIODIR)lsan.supp .
 	gcc $(CFLAGS) -c main.c -o $@
 

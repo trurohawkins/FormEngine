@@ -29,46 +29,23 @@ Form *makeGuy() {
 }
 
 void *renderGuy(void *data) {
-	Form *guy = data;	
-	RenderCommand reco = {
-		.type = 0,
-		.index = -1,
-		.layer = 0,
-		.pos = {
-			.x = worldXToScreenX(guy->pos[0]),
-			.y = worldYToScreenY(guy->pos[1]),
-		},
-	};
-	Color col = {
-		.rgb = {
-			255, 255, 255,
-		},
-	};
-	memcpy(reco.data, &col, sizeof(Color));
-	addRenderCommand(reco);
+	asciiRenderForm(data, 40, 223, 184);
 }
 
-void moveUp(void *g, float val) {
-	if (val == 1) {
-		setMove(g, 1, 1);
-	}
+Form *makeBlock() {
+	Form *block = makeForm(BLOCK);
+	
+	Nub *ren = growRenderNub(block);
+	RenderObject *rob = ren->data;
+	rob->data = block;
+	rob->render = renderBlock;
+
+	MoveVars *mv = makeMover(block);
+
+	return block;
 }
 
-void moveLeft(void *g, float val) {
-	if (val == 1) {
-		setMove(g, 0, -1);
-	}
-}
-
-void moveDown(void *g, float val) {
-	if (val == 1) {
-		setMove(g, 1, -1);
-	}
-}
-
-void moveRight(void *g, float val) {
-	if (val == 1) {
-		setMove(g, 0, 1);
-	}
+void *renderBlock(void *data) {
+	asciiRenderForm(data, 180, 70, 40);
 }
 

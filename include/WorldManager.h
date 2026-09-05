@@ -16,3 +16,6 @@ bool endWorld();
 int addTimedEvent(void (*func)(void *), void *data, double frequency);
 void pauseSet(bool value);
 void clearTimedEvents();
+
+void asciiRenderForm(Form *f, uint8_t r, uint8_t g, uint8_t b);
+
