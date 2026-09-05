@@ -89,3 +89,11 @@ Form *checkFormID(int x, int y, int id) {
 	return NULL;
 }
 
+bool checkCellFull(int x, int y) {
+	Cell *c = getCell(x, y);
+	if (c) {
+		return cellFull(c);
+	}
+	return true;
+}
+

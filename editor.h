@@ -1,9 +1,9 @@
 #pragma once
 
-#define CONTENT_SIZE FORMS_PER_CELL * 20
+#define CONTENT_SIZE FORMS_PER_CELL * 40
 typedef struct {
 	bool on;
-	Form *cursor;
+	Pos cursor;
 
 	int contextMenu;
 } Editor;
@@ -17,4 +17,5 @@ void cursorUp(void *e, float val);
 void cursorLeft(void *e, float val);
 void cursorDown(void *e, float val);
 void cursorRight(void *e, float val);
+void useTool(void *e, float val);
 

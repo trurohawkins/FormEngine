@@ -14,6 +14,7 @@ World *getWorld();
 void freeWorld();
 bool placeForm(Form *f, int x, int y);
 bool removeForm(Form *f, int x, int y);
+bool checkCellFull(int x, int y);
 bool moveForm(Form *f, int xd, int y);
 Cell *getCell(int x, int y);
 Form *checkFormID(int x, int y, int id);

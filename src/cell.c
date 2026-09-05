@@ -20,6 +20,15 @@ bool removeFromCell(Form *form, Cell *cell) {
 	return false;
 }
 
+bool cellFull(Cell *c) {
+	for (int i = 0; i < FORMS_PER_CELL; i++) {
+		if (!c->within[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+
 void printCell(Cell c) {
 	printf("printing CELL %i\n", c);
 	for (int i = 0; i < FORMS_PER_CELL; i++) {

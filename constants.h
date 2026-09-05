@@ -1,7 +1,7 @@
 //Form IDs
-#define CURSOR 0
-#define GUY 1
-#define BLOCK 2
+#define FORMIDS 2
+#define GUY 0
+#define BLOCK 1
 
 //Nubs
 #define MOVENUB 4
