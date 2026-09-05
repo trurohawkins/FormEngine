@@ -13,5 +13,4 @@ bool removeFromCell(Form *form, Cell *cell);
 Form *removeIndexCell(Cell *cell, int index);
 bool cellFull(Cell *cell);
 void printCell(Cell c);
-
 #endif

@@ -29,6 +29,8 @@ typedef struct {
 	void (*delete)(void*);
 } FormRecipe;
 
+#define FORMIDS 2
+extern FormRecipe CookBook[FORMIDS];
 
 Form *makeForm(int id);
 Nub *growNub(Form *f);

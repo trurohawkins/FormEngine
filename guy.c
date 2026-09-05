@@ -36,8 +36,10 @@ void freeGuy(void *form) {
 	Actor *a = findNub(form, 2)->data;
 	a->deleteMe = true;
 	Player *p = checkPlayer(1);
-	removePlayer(p);
-	freePlayer(p);
+	if (p) {
+		removePlayer(p);
+		freePlayer(p);
+	}
 	freeForm(form);
 }
 

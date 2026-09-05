@@ -97,3 +97,58 @@ bool checkCellFull(int x, int y) {
 	return true;
 }
 
+void writeWorld(char *file) {
+	FILE *fptr = fopen(file, "wb");
+	int sizes[3] = {theWorld.x, theWorld.y, FORMS_PER_CELL};
+	fwrite(sizes, sizeof(int), 3, fptr);
+	int empty = -1;
+	for (int i = 0; i < theWorld.x * theWorld.y; i++) {
+		Cell c = theWorld.map[i];
+		for (int i = 0; i < FORMS_PER_CELL; i++) {
+			if (c.within[i]) {
+				Form *f = c.within[i];
+				fwrite(&f->id, sizeof(int), 1, fptr);
+			} else {
+				fwrite(&empty, sizeof(int), 1, fptr);
+			}
+		}
+	}
+	fclose(fptr);
+}
+
+bool loadWorld(char *file) {
+	FILE *fptr = fopen(file, "rb");
+	if (fptr != NULL) {
+		int sizes[3];// = readBinaryInt(fptr, 3);
+		fread(sizes, sizeof(int), 3, fptr);
+		if (sizes[2] > FORMS_PER_CELL) {
+			debugWrite("Forms per cell mismatch");
+			return false;
+		}
+		if (theWorld.map) {
+			freeWorld();
+		}
+		makeWorld(sizes[0], sizes[1]);
+			for (int y = 0; y < theWorld.y; y++) {
+		for (int x = 0; x < theWorld.x; x++) {
+				//make block big enough for max Forms
+				int idBlock[FORMS_PER_CELL];
+				//only read the given amount
+				fread(idBlock, sizeof(int), sizes[2], fptr);
+				for (int i = 0; i < sizes[2]; i++) {
+					if (idBlock[i] != -1) {
+						Form *f = CookBook[idBlock[i]].spawn();
+						if (f) {
+							placeForm(f, x, y);
+						}
+					}
+				}
+			}
+		}
+		fclose(fptr);
+		return true;
+	}
+	return false;
+}
+
+
