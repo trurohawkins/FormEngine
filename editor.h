@@ -6,7 +6,6 @@ typedef struct {
 	Form *cursor;
 
 	int contextMenu;
-	char content[CONTENT_SIZE];
 } Editor;
 
 Editor *makeEditor();
