@@ -6,6 +6,8 @@
 #include "GameCore.h"
 
 // standard Nub types
+#define RENDERNUB 1
+#define ACTORNUB 2
 	// 0 - no type
 	// 1 - rendering nub
 	// 2 - actor nub
@@ -37,5 +39,4 @@ void freeNub(void *nub);
 
 void printForm(Form *f);
 
-//#include "sigil.h"
 #endif

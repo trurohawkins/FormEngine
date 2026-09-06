@@ -5,7 +5,6 @@
 #include "constants.h"
 #include "move.c"
 #include "guy.c"
-#include "editor.c"
 
 int main(int argc, char **argv) {
 	initCookBook(formIDs);

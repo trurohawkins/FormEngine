@@ -3,6 +3,8 @@
 #include "form.h"
 #include "cell.h"
 #include "world.h"
+#include "stat.h"
 #include "view.h"
 #include "level.h"
+#include "editor.h"
 #include "WorldManager.h"

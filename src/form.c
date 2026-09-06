@@ -44,7 +44,7 @@ Nub *growRenderNub(Form *f) {
 
 Actor *makeFormActor(Form *f) {
 	Nub *a = growNub(f);
-	a->type = 2;
+	a->type = ACTORNUB;
 	Actor *actor = makeActor(f);
 	a->data = actor;
 	return actor;
@@ -52,7 +52,7 @@ Actor *makeFormActor(Form *f) {
 
 void freeForm(void *form) {
 	Form *f = form;
-	Nub *a = findNub(form, 2);
+	Nub *a = findNub(form, ACTORNUB);
 	if (a) {
 		Actor *act = a->data;
 		act->deleteMe = true;
@@ -87,4 +87,3 @@ void printForm(Form *f) {
 	}
 }
 
-//#include "sigil.c"
