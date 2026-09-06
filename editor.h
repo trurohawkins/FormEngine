@@ -13,13 +13,13 @@ typedef struct {
 } Editor;
 
 Editor *makeEditor();
-void *renderEditor(void *data);
+void renderEditor();
 void renderCursor(Editor *e);
 void renderContextMenu(Editor *e);
 void renderToolBar(Editor *e);
 
 void setEditMode(Editor *e, bool on);
-void freeEditor(Editor *e);
+void freeEditor();
 void toggleEditMode(void *e, float val);
 void cursorUp(void *e, float val);
 void cursorLeft(void *e, float val);
@@ -30,4 +30,4 @@ void useTool(void *e, float val);
 void switchRecipe(void *editor, float val);
 void switchRemove(void *editor, float val);
 void pullForm(void *editor, float val);
-
+void saveMap(void *editor, float val);

@@ -7,7 +7,6 @@ typedef struct {
 	Cell *map;
 } World;
 
-extern World theWorld;
 
 void makeWorld(int x, int y);
 World *getWorld();
@@ -19,5 +18,20 @@ bool moveForm(Form *f, int xd, int y);
 Cell *getCell(int x, int y);
 Form *checkFormID(int x, int y, int id);
 
+typedef struct {
+	char *type;
+	Form *(*spawn)(void);
+	void (*delete)(void*);
+} FormRecipe;
+
+typedef struct {
+	int ids;
+	FormRecipe *recipes;
+} CookBook;
+extern CookBook cookBook;
+
+void initCookBook(int ids);
+void freeCookBook();
 void writeWorld(char *file);
 bool loadWorld(char *file);
+void destroyForm(void *f);

@@ -12,7 +12,7 @@ MoveVars *makeMover(Form *f) {
 }
 
 int moveAction(void *data, Action *a, float delta) {
-	MoveVars *mv = a->data;
+	MoveVars *mv = getMove(data);
 	if (mv->curMove[0] != 0 || mv->curMove[1] != 0) {
 		Form *m = data;
 		int dest[2] = {m->pos[0] + mv->curMove[0], m->pos[1] + mv->curMove[1]};
@@ -23,6 +23,9 @@ int moveAction(void *data, Action *a, float delta) {
 		mv->curMove[0] = 0;
 		mv->curMove[1] = 0;
 	}
+}
+
+void move(MoveVars *mv) {
 }
 
 bool checkMove(Form *f, int destX, int destY) {
@@ -42,6 +45,15 @@ bool checkMove(Form *f, int destX, int destY) {
 	return false;
 }
 
+MoveVars *getMove(Form *f) {
+	Nub *moveNub = findNub(f, MOVENUB);
+	if (moveNub) {
+		return moveNub->data;
+	} else {
+		return NULL;
+	}
+}
+
 //gets movenub from form and sets it curMove on the axis to value
 void setMove(Form *f, int axis, int val) {
 	if (f) {
@@ -51,6 +63,7 @@ void setMove(Form *f, int axis, int val) {
 			MoveVars *mv = moveNub->data;
 			//get movevars and check if proper axis
 			if (axis >= 0 && axis < 2) {
+				debugWrite("setting move\n");
 				//cur move locked into -1, 0, 1
 				mv->curMove[axis] = sign(val);
 			}

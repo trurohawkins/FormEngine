@@ -1,17 +1,22 @@
 #include "editor.h"
 
+Editor *editor = 0;
+
 Editor *makeEditor() {
-	Editor *editor = calloc(1, sizeof(Editor));
+	if (editor != 0) {
+		return editor;
+	}
+	editor = calloc(1, sizeof(Editor));
 
 	editor->on = false;
-	Menu *toolBar = makeMenu(1, FORMIDS, 15, 3);
+	Menu *toolBar = makeMenu(1, cookBook.ids, 15, 3);
 	toolBar->pos[0] = 0.13;
 	toolBar->pos[1] = 0.5;
-	for (int i = 0; i < FORMIDS; i++) {
+	for (int i = 0; i < cookBook.ids; i++) {
 		Button *butt = getButton(toolBar, 0, i);
 		TextBox *tBox = getTextBox(butt->textBox);
-		int len = strlen(CookBook[i].type);
-		snprintf(tBox->string, len+6, "[%i] %s", i, CookBook[i].type);
+		int len = strlen(cookBook.recipes[i].type);
+		snprintf(tBox->string, len+6, "[%i] %s", i, cookBook.recipes[i].type);
 	}
 	editor->toolBar = toolBar;
 	editor->curForm = 0;
@@ -39,17 +44,19 @@ Editor *makeEditor() {
 		addKeyControl(player, 'F', switchRecipe);
 		addKeyControl(player, 'R', switchRemove);
 		addKeyControl(player, 'X', pullForm);
+		addKeyControl(player, 'M', saveMap);
 	}
 
 	return editor;
 }
 
-void *renderEditor(void *data) {
-	Editor *e = data;
-	renderCursor(e);
-	renderContextMenu(e);
-	//addMenu(e->contextMenu);
-	addMenu(e->toolBar);
+void renderEditor() {
+	if (editor->on) {
+		renderCursor(editor);
+		renderContextMenu(editor);
+		//addMenu(e->contextMenu);
+		addMenu(editor->toolBar);
+	}
 }
 
 void renderContextMenu(Editor *e) {
@@ -165,7 +172,7 @@ void useTool(void *editor, float val) {
 		Editor *e = editor;
 		if (e->on) {
 			if (!checkCellFull(e->cursor.x, e->cursor.y)) {
-				Form *f = CookBook[e->curForm].spawn();
+				Form *f = cookBook.recipes[e->curForm].spawn();
 				if (f) {
 					placeForm(f, e->cursor.x, e->cursor.y);
 					checkForForms(e);
@@ -208,7 +215,7 @@ void switchRecipe(void *editor, float val) {
 	if (val == 1) {
 		Editor *e = editor;
 		if (e->on) {
-			e->curForm = (e->curForm + 1) % FORMIDS;
+			e->curForm = (e->curForm + 1) % cookBook.ids;
 			selectButton(e->toolBar, 0, e->curForm);
 			screenChanged(0, 0);
 		}
@@ -222,16 +229,25 @@ void pullForm(void *editor, float val) {
 			if (e->curCheck >= 0) {
 				Cell *c = getCell(e->cursor.x, e->cursor.y);
 				Form *f = removeIndexCell(c, e->curCheck);
-				CookBook[f->id].delete(f);
+				cookBook.recipes[f->id].delete(f);
+				checkForForms(e);
 				screenChanged(0, 0);
 			}
 		}
 	}
 }
 
+void saveMap(void *editor, float val) {
+	if (val == 1) {
+		Editor *e = editor;
+		if (e->on) {
+			writeWorld("level00.bin");
+		}
+	}
+}
 
-void freeEditor(Editor *e) {
-	deleteMenu(e->toolBar);
-	deleteMenu(e->contextMenu);
-	free(e);
+void freeEditor() {
+	deleteMenu(editor->toolBar);
+	deleteMenu(editor->contextMenu);
+	free(editor);
 }

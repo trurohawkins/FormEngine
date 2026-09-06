@@ -21,7 +21,7 @@ bool startWorld(int graphics, int audio) {
 	if (graphics > 0) {
 		initScreen();
 	}
-	renderFunc = formRender;
+	addRenderFunction(formRender);
 	runGraphics = graphics;
 	if (audio > 0) {
 		initAudio();
@@ -65,6 +65,7 @@ void screenChanged(int x, int y) {
 }
 
 bool endWorld() {
+	freeWorld();
 	pthread_join(gameThread, NULL);
 	if (runGraphics > 0) {
 		pthread_join(outputThread, NULL);
@@ -79,7 +80,6 @@ bool endWorld() {
 	if (runAudio > 0) {
 		endAudio();
 	}
-	freeWorld();
 	return true;
 }
 

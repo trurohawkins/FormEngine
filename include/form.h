@@ -23,14 +23,6 @@ typedef struct {
 	Nub *nub;
 } Form;
 
-typedef struct {
-	char *type;
-	Form *(*spawn)(void);
-	void (*delete)(void*);
-} FormRecipe;
-
-#define FORMIDS 2
-extern FormRecipe CookBook[FORMIDS];
 
 Form *makeForm(int id);
 Nub *growNub(Form *f);

@@ -6,6 +6,8 @@ typedef struct {
 
 MoveVars *makeMover(Form *f);
 int moveAction(void *data, Action *a, float delta);
+void move(MoveVars *mv);
+MoveVars *getMove(Form *f);
 //gets movenub from form and sets it curMove on the axis to value
 void setMove(Form *f, int axis, int val);
 bool checkMove(Form *f, int destX, int destY);

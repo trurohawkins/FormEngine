@@ -5,6 +5,10 @@ World theWorld = {
 	.y = 0,
 	.map = 0
 };
+CookBook cookBook = {
+	.ids = 0,
+	.recipes = 0
+};
 
 void makeWorld(int x, int y) {
 	theWorld.x = x;
@@ -28,12 +32,24 @@ void freeWorld() {
 			}
 		}
 		if (forms) {
-			deleteList(&forms, &freeForm);
+			deleteList(&forms, &destroyForm);
 		}
 		free(theWorld.map);
 		theWorld.map = 0;
 	}
 }
+
+void destroyForm(void *form) {
+	Form *f = form;
+	if (cookBook.recipes) {
+		if (f->id < cookBook.ids) {
+			cookBook.recipes[f->id].delete(f);
+			return;
+		}
+	}
+	freeForm(form);
+}
+
 
 bool placeForm(Form *f, int x, int y) {
 	if (x >= 0 && y >= 0 && x < theWorld.x && y < theWorld.y) {
@@ -97,6 +113,19 @@ bool checkCellFull(int x, int y) {
 	return true;
 }
 
+void initCookBook(int ids) {
+	cookBook.recipes = calloc(sizeof(FormRecipe), ids);
+	cookBook.ids = ids;
+}
+
+void freeCookBook() {
+	if (cookBook.recipes != 0) {
+		free(cookBook.recipes);
+		cookBook.recipes = 0;
+	}
+}
+
+
 void writeWorld(char *file) {
 	FILE *fptr = fopen(file, "wb");
 	int sizes[3] = {theWorld.x, theWorld.y, FORMS_PER_CELL};
@@ -129,15 +158,16 @@ bool loadWorld(char *file) {
 			freeWorld();
 		}
 		makeWorld(sizes[0], sizes[1]);
-			for (int y = 0; y < theWorld.y; y++) {
-		for (int x = 0; x < theWorld.x; x++) {
+		for (int y = 0; y < theWorld.y; y++) {
+			for (int x = 0; x < theWorld.x; x++) {
 				//make block big enough for max Forms
 				int idBlock[FORMS_PER_CELL];
 				//only read the given amount
 				fread(idBlock, sizeof(int), sizes[2], fptr);
 				for (int i = 0; i < sizes[2]; i++) {
 					if (idBlock[i] != -1) {
-						Form *f = CookBook[idBlock[i]].spawn();
+						FormRecipe r = cookBook.recipes[idBlock[i]];
+						Form *f = cookBook.recipes[idBlock[i]].spawn();
 						if (f) {
 							placeForm(f, x, y);
 						}

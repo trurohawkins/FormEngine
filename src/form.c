@@ -1,5 +1,4 @@
 #include "form.h"
-
 Form *makeForm(int id) {
 	Form *form = calloc(1, sizeof(Form));
 	form->id = id;
@@ -21,14 +20,18 @@ Nub *growNub(Form *f) {
 }
 
 Nub *findNub(Form *f, int type) {
-	Nub *nub = f->nub;
-	while (nub) {
-		if (nub->type == type) {
-			break;
-		} 
-		nub = nub->nub;
+	if (f) {
+		Nub *nub = f->nub;
+		while (nub) {
+			if (nub->type == type) {
+				break;
+			} 
+			nub = nub->nub;
+		}
+		return nub;
+	} else {
+		return NULL;
 	}
-	return nub;
 }
 
 Nub *growRenderNub(Form *f) {
@@ -49,6 +52,11 @@ Actor *makeFormActor(Form *f) {
 
 void freeForm(void *form) {
 	Form *f = form;
+	Nub *a = findNub(form, 2);
+	if (a) {
+		Actor *act = a->data;
+		act->deleteMe = true;
+	}
 	Nub *n = f->nub;
 	while (n) {
 		Nub *next = n->nub;

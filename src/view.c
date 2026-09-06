@@ -42,10 +42,11 @@ void setBackgroundColor(int r, int g, int b) {
 }
 
 void setViewPosition(int x, int y) {
+	World *w = getWorld();
 	int oldX = curView.pos[0];
 	int oldY = curView.pos[1];
-	curView.pos[0] = clamp(x - curView.dim[0]/2, 0, theWorld.x - curView.dim[0]);
-	curView.pos[1] = clamp(y - curView.dim[1]/2, 0, theWorld.y - curView.dim[1]);
+	curView.pos[0] = clamp(x - curView.dim[0]/2, 0, w->x - curView.dim[0]);
+	curView.pos[1] = clamp(y - curView.dim[1]/2, 0, w->y - curView.dim[1]);
 	if (oldX != curView.pos[0] || oldY != curView.pos[1]) {
 		setNewRender();
 	}
@@ -77,7 +78,8 @@ void renderView() {
 }
 
 void renderWorld() {
-	if (!theWorld.map) {
+	World *w = getWorld();
+	if (!w->map) {
 		return;
 	}
 	static int visit = 0;
@@ -86,9 +88,9 @@ void renderWorld() {
 		for (int x = 0; x < curView.dim[0]; x++) {
 			int xp = x + curView.pos[0];
 			int yp = y + curView.pos[1];
-			if (xp >= 0 && yp >= 0 && xp < theWorld.x && yp < theWorld.y) {
-				int w = yp * theWorld.x + xp;
-				Cell c = theWorld.map[w];
+			if (xp >= 0 && yp >= 0 && xp < w->x && yp < w->y) {
+				int wp = yp * w->x + xp;
+				Cell c = w->map[wp];
 				for (int i = 0; i < FORMS_PER_CELL; i++) {
 					if (c.within[i]) {
 						Nub *skin = findNub(c.within[i], 1);
