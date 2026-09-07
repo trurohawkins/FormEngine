@@ -1,29 +1,24 @@
 #include "guy.h"
 Form *makeGuy() {
 	Form *guy = makeForm(GUY);
-
-	Nub *ren = growRenderNub(guy);
-	RenderObject *rob = ren->data;
-	rob->data = guy;
-	rob->render = renderGuy;
+	Nub *ren = growRenderNub(guy, guy, renderGuy);
 
 	MoveVars *mv = makeMover(guy);
 	//mv->curMove[1] = 1;
 
-	Actor *actor = makeFormActor(guy);
+	//Actor *actor = makeFormActor(guy);
+	Control *con = makeFormControl(guy);
+	con->actor = makeActor(guy);
 	Action *action = makeAction(0, guyAction, guy);
-	addAction(actor, action);
-	addActor(actor);
+	addAction(con->actor, action);
+	addActor(con->actor);
 
-	Player *player = checkPlayer(1);
-	if (player == 0) {
-		player = makePlayer(guy, 1 ,0);
-		addPlayer (player);
-		addKeyControl(player, 'W', moveUp);
-		addKeyControl(player, 'A', moveLeft);
-		addKeyControl(player, 'S', moveDown);
-		addKeyControl(player, 'D', moveRight);
-	}
+	Player *player = addPlayer(guy);
+	addKeyControl(player, 'W', moveUp);
+	addKeyControl(player, 'A', moveLeft);
+	addKeyControl(player, 'S', moveDown);
+	addKeyControl(player, 'D', moveRight);
+	con->player = player;
 
 	return guy;
 }
@@ -67,22 +62,12 @@ void *renderGuy(void *data) {
 }
 
 void freeGuy(void *form) {
-	Player *p = checkPlayer(1);
-	if (p) {
-		removePlayer(p);
-		freePlayer(p);
-	}
 	freeForm(form);
 }
 
 Form *makeBlock() {
 	Form *block = makeForm(BLOCK);
-	
-	Nub *ren = growRenderNub(block);
-	RenderObject *rob = ren->data;
-	rob->data = block;
-	rob->render = renderBlock;
-
+	Nub *ren = growRenderNub(block, block, renderBlock);
 	MoveVars *mv = makeMover(block);
 
 	return block;
@@ -94,10 +79,7 @@ void *renderBlock(void *data) {
 
 Form *makeGoal() {
 	Form *goal = makeForm(GOAL);
-	Nub *ren = growRenderNub(goal);
-	RenderObject *rob = ren->data;
-	rob->data = goal;
-	rob->render = renderGoal;
+	Nub *ren = growRenderNub(goal, goal, renderGoal);
 	return goal;
 }
 

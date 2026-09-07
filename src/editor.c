@@ -29,12 +29,8 @@ Editor *makeEditor() {
 	editor->curCheck = 0;
 
 
-	Player *player = checkPlayer(5);
-	if (player == 0) {
-		player = makePlayer(editor, 5, 0);
-		player->ignorePause = true;
-		addPlayer (player);
-	}
+	Player *player = addPlayer(editor);
+	player->ignorePause = true;
 	addKeyControl(player, 'P', toggleEditMode);
 	addKeyControl(player, 'W', cursorUp);
 	addKeyControl(player, 'A', cursorLeft);

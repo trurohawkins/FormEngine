@@ -34,28 +34,40 @@ Nub *findNub(Form *f, int type) {
 	}
 }
 
-Nub *growRenderNub(Form *f) {
+Nub *growRenderNub(Form *f, void *data, void *(*renderFunc)(void*)) {
 	Nub *r = growNub(f);
 	r->type = 1;
-	r->data = calloc(1, sizeof(RenderObject));
 	r->owned = true;
+	RenderObject *rob = calloc(1, sizeof(RenderObject));
+	rob->data = data;
+	rob->render = renderFunc;
+	r->data = rob;
 	return r;
 }
 
-Actor *makeFormActor(Form *f) {
+Control *makeFormControl(Form *f) {
 	Nub *a = growNub(f);
-	a->type = ACTORNUB;
-	Actor *actor = makeActor(f);
-	a->data = actor;
-	return actor;
+	a->type = CONTROLNUB;
+	a->owned = true;
+	Control *con = calloc(1, sizeof(Control));//makeActor(f);
+	a->data = con;
+	return con;
 }
 
 void freeForm(void *form) {
 	Form *f = form;
-	Nub *a = findNub(form, ACTORNUB);
+	Nub *a = findNub(form, CONTROLNUB);
 	if (a) {
-		Actor *act = a->data;
-		act->deleteMe = true;
+		Control *con = a->data;
+		if (con) {
+			if (con->actor) {
+				con->actor->deleteMe = true;
+			}
+			if (con->player) {
+				removePlayer(con->player);
+				freePlayer(con->player);
+			}
+		}
 	}
 	Nub *n = f->nub;
 	while (n) {

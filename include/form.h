@@ -7,10 +7,10 @@
 
 // standard Nub types
 #define RENDERNUB 1
-#define ACTORNUB 2
+#define CONTROLNUB 2
 	// 0 - no type
 	// 1 - rendering nub
-	// 2 - actor nub
+	// 2 - actor/player nub
 typedef struct Nub {
 	int type;
 	void *data;
@@ -25,14 +25,19 @@ typedef struct {
 	Nub *nub;
 } Form;
 
+typedef struct {
+	Actor *actor;
+	Player *player;
+} Control;
+
 
 Form *makeForm(int id);
 Nub *growNub(Form *f);
 Nub *findNub(Form *f, int type);
 
-Nub *growRenderNub(Form *f);
+Nub *growRenderNub(Form *f, void *data, void *(*renderFunc)(void*));
 // attaches nub that knows actor
-Actor *makeFormActor(Form *f);
+Control *makeFormControl(Form *f);
 
 void freeForm(void *form);
 void freeNub(void *nub);

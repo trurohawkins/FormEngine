@@ -1,4 +1,4 @@
-TARGET = editor
+TARGET = maze
 
 LIBDIR = lib/
 SRCDIR = src/
