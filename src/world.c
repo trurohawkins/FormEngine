@@ -165,12 +165,9 @@ bool loadWorld(char *file) {
 				//only read the given amount
 				fread(idBlock, sizeof(int), sizes[2], fptr);
 				for (int i = 0; i < sizes[2]; i++) {
-					if (idBlock[i] != -1) {
+					if (idBlock[i] >= 0 && idBlock[i] < cookBook.ids) {
 						FormRecipe r = cookBook.recipes[idBlock[i]];
-						Form *f = cookBook.recipes[idBlock[i]].spawn();
-						if (f) {
-							placeForm(f, x, y);
-						}
+						Form *f = cookBook.recipes[idBlock[i]].spawn(x, y);
 					}
 				}
 			}

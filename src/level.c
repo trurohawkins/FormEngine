@@ -1,13 +1,19 @@
 #include "level.h"
 
 linkedList *levels = 0;
-int curLevel = 0;
+int curLevel = -1;
+
+void setLevel(int level) {
+	curLevel = level;
+}
 
 Level *makeLevel(char *file, void (*func)(void)) {
 	Level *lvl = calloc(1, sizeof(Level));
 	int fLen = strlen(file);
-	lvl->file = calloc(1, fLen+1);
-	memcpy(lvl->file, file, fLen+1);
+	if (fLen > 0) {
+		lvl->file = calloc(1, fLen+1);
+		memcpy(lvl->file, file, fLen+1);
+	}
 	lvl->func = func;
 	lvl->id = 0;
 	for (linkedList *cur = levels; cur; cur = cur->next) {
@@ -17,12 +23,23 @@ Level *makeLevel(char *file, void (*func)(void)) {
 	return lvl;
 }
 
-void loadNextLevel() {
+bool loadNextLevel() {
 	Level *next = findLevel(curLevel+1);
 	if (next) {
 		endLevel();
-		loadLevel(next);
+		curLevel += 1;
+		return loadLevel(next);
 	}
+	return false;
+}
+
+bool reloadLevel() {
+	Level *cur = findLevel(curLevel);
+	if (cur) {
+		endLevel();
+		return loadLevel(cur);
+	}
+	return false;
 }
 
 Level *findLevel(int id) {

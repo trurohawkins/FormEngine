@@ -23,6 +23,13 @@ Form *makeGuy() {
 	return guy;
 }
 
+Form *placeGuy(int x, int y) {
+	Form *guy = makeGuy();
+	if (guy) {
+		placeForm(guy, x, y);
+	}
+}
+
 int guyAction(void *data, Action *a, float delta) {
 	Form *guy = data;
 	MoveVars *mv = getMove(guy);
@@ -73,6 +80,13 @@ Form *makeBlock() {
 	return block;
 }
 
+Form *placeBlock(int x, int y) {
+	Form *block = makeBlock();
+	if (block) {
+		placeForm(block, x, y);
+	}
+}
+
 void *renderBlock(void *data) {
 	asciiRenderForm(data, 180, 70, 40);
 }
@@ -82,6 +96,14 @@ Form *makeGoal() {
 	Nub *ren = growRenderNub(goal, goal, renderGoal);
 	return goal;
 }
+
+Form *placeGoal(int x, int y) {
+	Form *goal = makeGoal();
+	if (goal) {
+		placeForm(goal, x, y);
+	}
+}
+
 
 void *renderGoal(void *data) {
 	asciiRenderForm(data, 20, 255, 20);

@@ -9,9 +9,11 @@ typedef struct {
 
 extern linkedList *levels;
 
+void setLevel(int level);
 Level *makeLevel(char *file, void (*func)(void));
 Level *findLevel(int id);
 bool loadLevel(Level *lvl);
-void loadNextLevel();
+bool loadNextLevel();
+bool reloadLevel();
 void endLevel();
 void freeLevel(void *level);

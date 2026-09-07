@@ -171,10 +171,11 @@ void useTool(void *editor, float val) {
 		Editor *e = editor;
 		if (e->on) {
 			if (!checkCellFull(e->cursor.x, e->cursor.y)) {
-				Form *f = cookBook.recipes[e->curForm].spawn();
-				if (f) {
-					placeForm(f, e->cursor.x, e->cursor.y);
-					checkForForms(e);
+				if (e->curForm >= 0 && e->curForm < cookBook.ids) {
+					Form *f = cookBook.recipes[e->curForm].spawn(e->cursor.x, e->cursor.y);
+					if (f) {
+						checkForForms(e);
+					}
 				}
 			}
 		}
@@ -228,9 +229,11 @@ void pullForm(void *editor, float val) {
 			if (e->curCheck >= 0) {
 				Cell *c = getCell(e->cursor.x, e->cursor.y);
 				Form *f = removeIndexCell(c, e->curCheck);
-				cookBook.recipes[f->id].delete(f);
-				checkForForms(e);
-				screenChanged(0, 0);
+				if (f->id >= 0 && f->id < cookBook.ids) {
+					cookBook.recipes[f->id].delete(f);
+					checkForForms(e);
+					screenChanged(0, 0);
+				}
 			}
 		}
 	}

@@ -20,7 +20,7 @@ Form *checkFormID(int x, int y, int id);
 
 typedef struct {
 	char *type;
-	Form *(*spawn)(void);
+	Form *(*spawn)(int, int);
 	void (*delete)(void*);
 } FormRecipe;
 
