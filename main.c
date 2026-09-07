@@ -17,7 +17,6 @@ int main(int argc, char **argv) {
 	Level *lvl0 = makeLevel("lvl00.bin", 0);
 	makeLevel("lvl01.bin", 0);
 	startWorld(true, true);
-	addRenderFunction(renderEditor);//renderThis;
 
 	int spawnPos[2] = {worldX/2, worldY/2};
 	if (!loadLevel(lvl0)) {

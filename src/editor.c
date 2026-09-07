@@ -29,23 +29,24 @@ Editor *makeEditor() {
 	editor->curCheck = 0;
 
 
-	Player *player = checkPlayer(0);
+	Player *player = checkPlayer(5);
 	if (player == 0) {
-		player = makePlayer(editor, 0, 0);
+		player = makePlayer(editor, 5, 0);
 		player->ignorePause = true;
 		addPlayer (player);
-		addKeyControl(player, 'P', toggleEditMode);
-		addKeyControl(player, 'W', cursorUp);
-		addKeyControl(player, 'A', cursorLeft);
-		addKeyControl(player, 'S', cursorDown);
-		addKeyControl(player, 'D', cursorRight);
-
-		addKeyControl(player, ' ', useTool);
-		addKeyControl(player, 'F', switchRecipe);
-		addKeyControl(player, 'R', switchRemove);
-		addKeyControl(player, 'X', pullForm);
-		addKeyControl(player, 'M', saveMap);
 	}
+	addKeyControl(player, 'P', toggleEditMode);
+	addKeyControl(player, 'W', cursorUp);
+	addKeyControl(player, 'A', cursorLeft);
+	addKeyControl(player, 'S', cursorDown);
+	addKeyControl(player, 'D', cursorRight);
+
+	addKeyControl(player, 'C', useTool);
+	addKeyControl(player, 'F', switchRecipe);
+	addKeyControl(player, 'R', switchRemove);
+	addKeyControl(player, 'X', pullForm);
+	addKeyControl(player, 'M', saveMap);
+	addRenderFunction(renderEditor);//renderThis;
 
 	return editor;
 }
@@ -139,7 +140,9 @@ void toggleEditMode(void *e, float val) {
 	if (val == 1) {
 		Editor *editor = e;
 		toggleGamePause();
-		setEditMode(editor, !editor->on);
+		editor->on = !editor->on;
+		screenChanged(0, 0);
+		debugWrite("toggled on\n");
 	}
 }
 
