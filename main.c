@@ -14,7 +14,8 @@ int main(int argc, char **argv) {
 	};
 	cookBook.recipes[1] = (FormRecipe){"Block", placeBlock, removeForm, freeForm};
 	cookBook.recipes[2] = (FormRecipe){"Goal", placeGoal, removeForm, freeForm};
-	Level *lvl0 = makeLevel("lvl00.bin", 0);
+	initLevels(2);
+	makeLevel("lvl00.bin", 0);
 	makeLevel("lvl01.bin", 0);
 	startWorld(true, true);
 
@@ -46,7 +47,7 @@ int main(int argc, char **argv) {
 
 	freeEditor();
 	freeCookBook();
-	deleteList(&levels, freeLevel);
+	freeLevels();
 
 	endWorld();
 	return 0;

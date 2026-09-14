@@ -1,64 +1,64 @@
 #include "level.h"
 
-linkedList *levels = 0;
+Level *levels = 0;
+int numLevels = 0;
+int maxLevels = 0;
 int curLevel = -1;
+
+void initLevels(int num) {
+	if (levels == 0) {
+		levels = calloc(num, sizeof(Level));
+		for (int i = 0; i < num; i++) {
+			levels[i].file = 0;
+		}
+		maxLevels = num;
+	}
+}
 
 void setLevel(int level) {
 	curLevel = level;
 }
 
-Level *makeLevel(char *file, void (*func)(void)) {
-	Level *lvl = calloc(1, sizeof(Level));
+int makeLevel(char *file, void (*func)(void)) {
+	if (numLevels >= maxLevels) {
+		return -1;
+	}
+	Level *lvl = &levels[numLevels];//calloc(1, sizeof(Level));
 	int fLen = strlen(file);
 	if (fLen > 0) {
 		lvl->file = calloc(1, fLen+1);
 		memcpy(lvl->file, file, fLen+1);
 	}
 	lvl->func = func;
-	lvl->id = 0;
-	for (linkedList *cur = levels; cur; cur = cur->next) {
-		lvl->id++;
-	}
-	addToList(&levels, lvl);
-	return lvl;
+	numLevels++;
+	return numLevels;
 }
 
 bool loadNextLevel() {
-	Level *next = findLevel(curLevel+1);
-	if (next) {
-		endLevel();
-		curLevel += 1;
-		return loadLevel(next);
+	if (curLevel + 1 < maxLevels) {
+		if (levels[curLevel+1].file != 0) {
+			endLevel();
+			curLevel++;
+			return loadLevel(curLevel);
+		}
 	}
 	return false;
 }
 
 bool reloadLevel() {
-	Level *cur = findLevel(curLevel);
-	if (cur) {
+	if (curLevel >= 0 && curLevel < maxLevels) {
 		endLevel();
-		return loadLevel(cur);
+		return loadLevel(curLevel);
 	}
 	return false;
 }
 
-Level *findLevel(int id) {
-	Level *lvl = 0;
-	for (linkedList *cur = levels; cur; cur = cur->next) {
-		Level *tmp = cur->data;
-		if (tmp->id == id) {
-			lvl = tmp;
-			break;
-		}
-	}
-	return lvl;
-}
-
-bool loadLevel(Level *lvl) {
-	if (lvl) {
-		if (loadWorld(lvl->file)) {
-			if (lvl->func) {
-				lvl->func();
+bool loadLevel(int lvl) {
+	if (lvl < numLevels) {
+		Level level = levels[lvl];
+		if (loadWorld(level.file)) {
+			if (level.func) {
+				level.func();
 			}
 			return true;
 		}
@@ -72,8 +72,10 @@ void endLevel() {
 	//deleteActorLists();
 }
 
-void freeLevel(void *level) {
-	Level *lvl = level;
-	free(lvl->file);
-	free(lvl);
+void freeLevels() {
+	for (int i = 0; i < numLevels; i++) {
+		if (levels[i].file != 0) {
+			free(levels[i].file);
+		}
+	}
 }
