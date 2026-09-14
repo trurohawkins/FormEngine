@@ -14,6 +14,7 @@ typedef struct {
 } Editor;
 
 Editor *makeEditor();
+void makeEditorPlayer(Editor *editor);
 void renderEditor();
 void renderCursor(Editor *e);
 void renderContextMenu(Editor *e);
@@ -21,14 +22,5 @@ void renderToolBar(Editor *e);
 
 void setEditMode(Editor *e, bool on);
 void freeEditor();
-void toggleEditMode(void *e, float val);
-void cursorUp(void *e, float val);
-void cursorLeft(void *e, float val);
-void cursorDown(void *e, float val);
-void cursorRight(void *e, float val);
+void moveCursor(Editor *e, int direction);
 void checkForForms(Editor *e);
-void useTool(void *e, float val);
-void switchRecipe(void *editor, float val);
-void switchRemove(void *editor, float val);
-void pullForm(void *editor, float val);
-void saveMap(void *editor, float val);

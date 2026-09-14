@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
 	//loadWorld("world.bin");
 
 	Editor *e = makeEditor();
+	makeEditorPlayer(e);
 	e->cursor.x = spawnPos[0];
 	e->cursor.y = spawnPos[1];
 

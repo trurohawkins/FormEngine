@@ -1,6 +1,16 @@
 #include "editor.h"
 
 Editor *editor = 0;
+void toggleEditMode(void *e, float val);
+void cursorUp(void *e, float val);
+void cursorLeft(void *e, float val);
+void cursorDown(void *e, float val);
+void cursorRight(void *e, float val);
+void useTool(void *e, float val);
+void switchRecipe(void *editor, float val);
+void switchRemove(void *editor, float val);
+void pullForm(void *editor, float val);
+void saveMap(void *editor, float val);
 
 Editor *makeEditor() {
 	if (editor != 0) {
@@ -28,7 +38,12 @@ Editor *makeEditor() {
 	editor->contextMenu = con;
 	editor->curCheck = 0;
 
+	addRenderFunction(renderEditor);//renderThis;
 
+	return editor;
+}
+
+void makeEditorPlayer(Editor *editor) {
 	Player *player = addPlayer(editor);
 	player->ignorePause = true;
 	addKeyControl(player, 'P', toggleEditMode);
@@ -42,9 +57,6 @@ Editor *makeEditor() {
 	addKeyControl(player, 'R', switchRemove);
 	addKeyControl(player, 'X', pullForm);
 	addKeyControl(player, 'M', saveMap);
-	addRenderFunction(renderEditor);//renderThis;
-
-	return editor;
 }
 
 void renderEditor() {
@@ -129,6 +141,7 @@ void moveCursor(Editor *e, int direction) {
 
 void setEditMode(Editor *e, bool on) {
 	e->on = on;
+	setGamePause(e->on);
 	screenChanged(0, 0);
 }
 
@@ -138,7 +151,6 @@ void toggleEditMode(void *e, float val) {
 		toggleGamePause();
 		editor->on = !editor->on;
 		screenChanged(0, 0);
-		debugWrite("toggled on\n");
 	}
 }
 
