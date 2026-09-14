@@ -68,10 +68,6 @@ void *renderGuy(void *data) {
 	asciiRenderForm(data, 40, 223, 184);
 }
 
-void freeGuy(void *form) {
-	freeForm(form);
-}
-
 Form *makeBlock() {
 	Form *block = makeForm(BLOCK);
 	Nub *ren = growRenderNub(block, block, renderBlock);

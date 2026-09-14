@@ -9,8 +9,9 @@ typedef struct {
 } Cell;
 
 bool addToCell(Form *form, Cell *cell);
-bool removeFromCell(Form *form, Cell *cell);
+Form *removeFromCell(Form *form, Cell *cell);
 Form *removeIndexCell(Cell *cell, int index);
+Form *indexCell(Cell *cell, int index);
 bool cellFull(Cell *cell);
 void printCell(Cell c);
 #endif

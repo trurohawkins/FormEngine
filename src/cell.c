@@ -10,24 +10,31 @@ bool addToCell(Form *form, Cell *cell) {
 	return false;
 }
 
-bool removeFromCell(Form *form, Cell *cell) {
+Form *removeFromCell(Form *form, Cell *cell) {
 	for (int i = 0; i < FORMS_PER_CELL; i++) {
 		if (cell->within[i] == form) {
 			cell->within[i] = 0;
-			return true;
+			return form;
 		}
-	}
-	return false;
-}
-
-Form *removeIndexCell(Cell *cell, int index) {
-	if (index >= 0 && index < FORMS_PER_CELL) {
-		Form *f = cell->within[index];
-		cell->within[index] = 0;
-		return f;
 	}
 	return NULL;
 }
+
+Form *removeIndexCell(Cell *cell, int index) {
+	Form *f = indexCell(cell, index);
+	if (f) {
+		cell->within[index] = 0;
+	}
+	return f;
+}
+
+Form *indexCell(Cell *cell, int index) {
+	if (index >= 0 && index < FORMS_PER_CELL) {
+		return cell->within[index];
+	}
+	return NULL;
+}
+
 
 bool cellFull(Cell *c) {
 	for (int i = 0; i < FORMS_PER_CELL; i++) {

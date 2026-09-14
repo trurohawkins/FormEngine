@@ -10,10 +10,10 @@ int main(int argc, char **argv) {
 	initCookBook(formIDs);
 	//FormRecipe guy = {"Guy", makeGuy, freeGuy};
 	cookBook.recipes[0] = (FormRecipe){
-		"Guy", placeGuy, freeGuy
+		"Guy", placeGuy, removeForm, freeForm
 	};
-	cookBook.recipes[1] = (FormRecipe){"Block", placeBlock, freeForm};
-	cookBook.recipes[2] = (FormRecipe){"Goal", placeGoal, freeForm};
+	cookBook.recipes[1] = (FormRecipe){"Block", placeBlock, removeForm, freeForm};
+	cookBook.recipes[2] = (FormRecipe){"Goal", placeGoal, removeForm, freeForm};
 	Level *lvl0 = makeLevel("lvl00.bin", 0);
 	makeLevel("lvl01.bin", 0);
 	startWorld(true, true);

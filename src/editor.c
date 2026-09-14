@@ -196,6 +196,7 @@ void switchRemove(void *editor, float val) {
 void checkForForms(Editor *e) {
 	Cell *c = getCell(e->cursor.x, e->cursor.y);
 	bool gotOne = false;
+	e->curCheck = clamp(e->curCheck, 0, FORMS_PER_CELL);
 	for (int i = 0; i < FORMS_PER_CELL; i++) {
 		if (c->within[e->curCheck]) {
 			gotOne = true;
@@ -228,9 +229,12 @@ void pullForm(void *editor, float val) {
 		if (e->on) {
 			if (e->curCheck >= 0) {
 				Cell *c = getCell(e->cursor.x, e->cursor.y);
-				Form *f = removeIndexCell(c, e->curCheck);
-				if (f->id >= 0 && f->id < cookBook.ids) {
-					cookBook.recipes[f->id].delete(f);
+				Form *f = indexCell(c, e->curCheck);
+				if (f && (f->id >= 0 && f->id < cookBook.ids)) {
+					Form *unmake = cookBook.recipes[f->id].remove(f, e->cursor.x, e->cursor.y);
+					if (unmake) {
+						cookBook.recipes[f->id].delete(unmake);
+					}
 					checkForForms(e);
 					screenChanged(0, 0);
 				}

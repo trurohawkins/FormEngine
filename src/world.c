@@ -64,14 +64,16 @@ bool placeForm(Form *f, int x, int y) {
 	return false;
 }
 
-bool removeForm(Form *f, int x, int y) {
+Form *removeForm(Form *f, int x, int y) {
+	Form *removed = 0;
 	if (x >= 0 && y >= 0 && x < theWorld.x && y < theWorld.y) {
 		Cell *c = &theWorld.map[(y*theWorld.x) + x];
-		if (removeFromCell(f, c)) {
+		removed = removeFromCell(f, c);
+		if (removed) {
 			setNewRender();
 		}
 	}
-	return false;
+	return removed;
 }
 
 bool moveForm(Form *f, int xd, int yd) {
