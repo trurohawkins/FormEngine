@@ -125,7 +125,7 @@ void renderContextMenu(Editor *e) {
 		char entry[40];
 		int written = 0;
 		if (f) {
-			written = snprintf(entry, 40, "%p\n[%i] Type: %i",f, i, f->id);
+			written = snprintf(entry, 40, "[%i] Type: %i\n%p", i, f->id, f);
 		} else {
 			written = snprintf(entry, 40, "[%i] ------       ", i);
 		}
