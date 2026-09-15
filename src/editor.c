@@ -6,11 +6,11 @@ void cursorUp(void *e, float val);
 void cursorLeft(void *e, float val);
 void cursorDown(void *e, float val);
 void cursorRight(void *e, float val);
-void useTool(void *e, float val);
-void switchRecipe(void *editor, float val);
-void switchRemove(void *editor, float val);
-void pullForm(void *editor, float val);
-void saveMap(void *editor, float val);
+void pressEditorSpawn(void *e, float val);
+void pressSwitchRecipe(void *editor, float val);
+void pressSwitchInspect(void *editor, float val);
+void pressRemoveInspected(void *editor, float val);
+void pressSaveMap(void *editor, float val);
 
 Editor *makeEditor() {
 	if (editor != 0) {
@@ -52,11 +52,11 @@ void makeEditorPlayer(Editor *editor) {
 	addKeyControl(player, 'S', cursorDown);
 	addKeyControl(player, 'D', cursorRight);
 
-	addKeyControl(player, 'C', useTool);
-	addKeyControl(player, 'F', switchRecipe);
-	addKeyControl(player, 'R', switchRemove);
-	addKeyControl(player, 'X', pullForm);
-	addKeyControl(player, 'M', saveMap);
+	addKeyControl(player, 'C', pressEditorSpawn);
+	addKeyControl(player, 'F', pressSwitchRecipe);
+	addKeyControl(player, 'R', pressSwitchInspect);
+	addKeyControl(player, 'X', pressRemoveInspected);
+	addKeyControl(player, 'M', pressSaveMap);
 }
 
 void renderEditor() {
@@ -178,30 +178,36 @@ void cursorRight(void *e, float val) {
 	}
 }
 
-void useTool(void *editor, float val) {
-	if (val == 1) {
-		Editor *e = editor;
-		if (e->on) {
-			if (!checkCellFull(e->cursor.x, e->cursor.y)) {
-				if (e->curForm >= 0 && e->curForm < cookBook.ids) {
-					Form *f = cookBook.recipes[e->curForm].spawn(e->cursor.x, e->cursor.y);
-					if (f) {
-						checkForForms(e);
-					}
+void editorSpawnForm(Editor *e) {
+	if (e->on) {
+		if (!checkCellFull(e->cursor.x, e->cursor.y)) {
+			if (e->curForm >= 0 && e->curForm < cookBook.ids) {
+				Form *f = cookBook.recipes[e->curForm].spawn(e->cursor.x, e->cursor.y);
+				if (f) {
+					checkForForms(e);
 				}
 			}
 		}
 	}
 }
 
-void switchRemove(void *editor, float val) {
+void switchInspect(Editor *e) {
+	if (e->on) {
+		e->curCheck = (e->curCheck + 1) % FORMS_PER_CELL;	
+		checkForForms(e);
+		screenChanged(0,0);
+	}
+}
+
+void pressEditorSpawn(void *editor, float val) {
 	if (val == 1) {
-		Editor *e = editor;
-		if (e->on) {
-			e->curCheck = (e->curCheck + 1) % FORMS_PER_CELL;	
-			checkForForms(e);
-			screenChanged(0,0);
-		}
+		editorSpawnForm(editor);
+	}
+}
+
+void pressSwitchInspect(void *editor, float val) {
+	if (val == 1) {
+		switchInspect(editor);
 	}
 }
 
@@ -224,38 +230,44 @@ void checkForForms(Editor *e) {
 	}
 }
 
-void switchRecipe(void *editor, float val) {
-	if (val == 1) {
-		Editor *e = editor;
-		if (e->on) {
-			e->curForm = (e->curForm + 1) % cookBook.ids;
-			selectButton(e->toolBar, 0, e->curForm);
-			screenChanged(0, 0);
-		}
+void switchRecipe(Editor *e) {
+	if (e->on) {
+		e->curForm = (e->curForm + 1) % cookBook.ids;
+		selectButton(e->toolBar, 0, e->curForm);
+		screenChanged(0, 0);
 	}
 }
 
-void pullForm(void *editor, float val) {
+void pressSwitchRecipe(void *editor, float val) {
 	if (val == 1) {
 		Editor *e = editor;
-		if (e->on) {
-			if (e->curCheck >= 0) {
-				Cell *c = getCell(e->cursor.x, e->cursor.y);
-				Form *f = indexCell(c, e->curCheck);
-				if (f && (f->id >= 0 && f->id < cookBook.ids)) {
-					Form *unmake = cookBook.recipes[f->id].remove(f, e->cursor.x, e->cursor.y);
-					if (unmake) {
-						cookBook.recipes[f->id].delete(unmake);
-					}
-					checkForForms(e);
-					screenChanged(0, 0);
+	}
+}
+
+void removeInspected(Editor *e) {
+	if (e->on) {
+		if (e->curCheck >= 0) {
+			Cell *c = getCell(e->cursor.x, e->cursor.y);
+			Form *f = indexCell(c, e->curCheck);
+			if (f && (f->id >= 0 && f->id < cookBook.ids)) {
+				Form *unmake = cookBook.recipes[f->id].remove(f, e->cursor.x, e->cursor.y);
+				if (unmake) {
+					cookBook.recipes[f->id].delete(unmake);
 				}
+				checkForForms(e);
+				screenChanged(0, 0);
 			}
 		}
 	}
 }
 
-void saveMap(void *editor, float val) {
+void pressRemoveInspected(void *editor, float val) {
+	if (val == 1) {
+		removeInspected(editor);
+	}
+}
+
+void pressSaveMap(void *editor, float val) {
 	if (val == 1) {
 		Editor *e = editor;
 		if (e->on) {

@@ -24,3 +24,8 @@ void setEditMode(Editor *e, bool on);
 void freeEditor();
 void moveCursor(Editor *e, int direction);
 void checkForForms(Editor *e);
+void editorSpawnForm(Editor *e);
+void switchInspect(Editor *e);
+void switchRecipe(Editor *e);
+void removeInspected(Editor *editor);
+
