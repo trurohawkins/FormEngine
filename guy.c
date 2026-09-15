@@ -34,7 +34,6 @@ int guyAction(void *data, Action *a, float delta) {
 	Form *guy = data;
 	MoveVars *mv = getMove(guy);
 	if (mv) {
-		debugWrite("guy action\n");
 		if (mv->curMove[0] != 0 || mv->curMove[1] != 0) {
 			bool canMove = true;
 			Form *m = data;

@@ -19,26 +19,30 @@ Editor *makeEditor() {
 	editor = calloc(1, sizeof(Editor));
 
 	editor->on = false;
-	Menu *toolBar = makeMenu(1, cookBook.ids, 15, 3);
-	toolBar->pos[0] = 0.13;
-	toolBar->pos[1] = 0.5;
+	Menu *toolBar = makeMenu(cookBook.ids, 1, 15, 3);
+	toolBar->pos[0] = 0.5 - (cookBook.ids/2 * 0.1);
+	toolBar->pos[1] = 0.9;
 	for (int i = 0; i < cookBook.ids; i++) {
-		Button *butt = getButton(toolBar, 0, i);
+		Button *butt = getButton(toolBar, i, 0);
 		TextBox *tBox = getTextBox(butt->textBox);
 		int len = strlen(cookBook.recipes[i].type);
-		snprintf(tBox->string, len+6, "[%i] %s", i, cookBook.recipes[i].type);
+		char buff[len+7];
+		snprintf(buff, len+6, "[%i] %s", i, cookBook.recipes[i].type);
+		fillText(tBox->text, buff);
 	}
 	editor->toolBar = toolBar;
 	editor->curForm = 0;
 
-	Menu *con = makeMenu(1, FORMS_PER_CELL, 25, 5);
+	Menu *con = makeMenu(1, FORMS_PER_CELL, 20, 4);
 	con->pos[0] = 0.87;
 	con->pos[1] = 0.1;
 	setMenuSpacing(con, 1, 5);
 	editor->contextMenu = con;
 	editor->curCheck = 0;
+	editor->inspector = createTextBox(24, 30, "");
 
 	addRenderFunction(renderEditor);//renderThis;
+
 
 	return editor;
 }
@@ -63,9 +67,45 @@ void renderEditor() {
 	if (editor->on) {
 		renderCursor(editor);
 		renderContextMenu(editor);
+		renderInspector(editor);
 		//addMenu(e->contextMenu);
 		addMenu(editor->toolBar);
 	}
+}
+
+void renderInspector(Editor *e) {
+	RenderCommand reco = {
+		.type = 1,
+		.index = editor->inspector,
+		.cmd = 2,
+		.pos = {
+			.x = screenX * 0.14,
+			.y = screenY/2,
+		},
+	};
+	if (e->curCheck >= 0 && e->curCheck < FORMS_PER_CELL) {
+		Cell *c = getCell(e->cursor.x, e->cursor.y);
+		if (c) {
+			Form *f = c->within[e->curCheck];
+			int capacity = 23 * 29;
+			char buff[capacity];
+			int written = 0;
+			if (f->id < cookBook.ids) {
+				written += snprintf(buff, capacity - written, "%s\n", cookBook.recipes[f->id].type);
+				Stat *stats = getStatBlock(f);
+				if (stats) {
+					int num = stats[0].id;
+					for (int i = 1; i < num; i++) {
+						written += snprintf(buff + written, capacity - written, "%i: %f\n", stats[i].id, stats[i].value);
+					}
+				}
+				memcpy(reco.data, buff, written);
+				addRenderCommand(reco);
+			}
+		}
+	}
+	reco.cmd = 0;
+	addRenderCommand(reco);
 }
 
 void renderContextMenu(Editor *e) {
@@ -87,23 +127,12 @@ void renderContextMenu(Editor *e) {
 		if (f) {
 			written = snprintf(entry, 40, "%p\n[%i] Type: %i",f, i, f->id);
 		} else {
-			written = snprintf(entry, 40, "[%i] -- ", i);
+			written = snprintf(entry, 40, "[%i] ------       ", i);
 		}
 		memset(reco.data, 0, RENDER_BUFFER_SIZE);
 		memcpy(reco.data, entry, written);
 		addRenderCommand(reco);
 	}
-	/*
-		 memset(reco.data, 0, RENDER_BUFFER_SIZE);
-		 if (written != 0) {
-		 memcpy(reco.data, content, min(CONTENT_SIZE, written));
-		 }
-
-		 reco.cmd = 0;
-		 reco.pos.x = screenX * 0.87;
-		 reco.pos.y = screenY * 0.5;
-		 addRenderCommand(reco);
-		 */
 	addMenu(e->contextMenu);
 }
 
@@ -233,14 +262,14 @@ void checkForForms(Editor *e) {
 void switchRecipe(Editor *e) {
 	if (e->on) {
 		e->curForm = (e->curForm + 1) % cookBook.ids;
-		selectButton(e->toolBar, 0, e->curForm);
+		selectButton(e->toolBar, e->curForm, 0);
 		screenChanged(0, 0);
 	}
 }
 
 void pressSwitchRecipe(void *editor, float val) {
 	if (val == 1) {
-		Editor *e = editor;
+		switchRecipe(editor);
 	}
 }
 

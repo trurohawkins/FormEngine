@@ -56,6 +56,14 @@ bool setStat(Form *f, int id, float value) {
 	}
 }
 
+Stat *getStatBlock(Form *f) {
+	Nub *stat = findNub(f, STATNUB);
+	if (stat) {
+		return stat->data;
+	}
+	return 0;
+}
+
 Form *checkStat(int x, int y, int id) {
 	World *w = getWorld();
 	if (x >= 0 && y >= 0 && x < w->x && y < w->y) {

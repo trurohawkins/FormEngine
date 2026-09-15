@@ -15,7 +15,7 @@ AUDIOLIB = $(AUDIODIR)lib/
 AUDIOINC = $(AUDIODIR)include/
 AUDIOFLAGS = -lportaudio -lsndfile
 
-HELPERDIR =HelperFuncs/
+HELPERDIR = HelperFuncs/
 HELPERINC = $(HELPERDIR)include/
 HELPERLIB = $(HELPERDIR)lib/
 

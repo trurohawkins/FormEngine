@@ -9,6 +9,7 @@ typedef struct {
 
 	Menu *contextMenu;
 	int curCheck;
+	int inspector; //textbox
 	Menu *toolBar;
 	int curForm;
 } Editor;
@@ -19,6 +20,7 @@ void renderEditor();
 void renderCursor(Editor *e);
 void renderContextMenu(Editor *e);
 void renderToolBar(Editor *e);
+void renderInspector(Editor *e);
 
 void setEditMode(Editor *e, bool on);
 void freeEditor();
