@@ -93,18 +93,22 @@ void renderInspector(Editor *e) {
 				int written = 0;
 				if (f->id < cookBook.ids) {
 					written += snprintf(buff, capacity - written, "%s\n", cookBook.recipes[f->id].type);
-					Stat *stats = getStatBlock(f);
-					if (stats) {
-						int num = stats[0].id;
-						for (int i = 1; i < num; i++) {
-							written += snprintf(buff + written, capacity - written, "%i: %f\n", stats[i].id, stats[i].value);
-						}
-					}
-					memcpy(reco.data, buff, written);
-					addRenderCommand(reco);
 				}
+				//Stat *stats = getStatBlock(f);
+				Nub *nub = f->nub;
+				while (nub) {
+					if (nub->type >= 0 && nub->type < cookBook.nubs) {
+						written += cookBook.infos[nub->type].inspect(nub, buff + written, capacity - written);
+					}
+					nub = nub->nub;
+				}
+				memcpy(reco.data, buff, written);
+				addRenderCommand(reco);
 			}
 		}
+	} else {
+		memcpy(reco.data, "--", 3);
+		addRenderCommand(reco);
 	}
 	reco.cmd = 0;
 	addRenderCommand(reco);

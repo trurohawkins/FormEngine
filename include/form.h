@@ -6,11 +6,10 @@
 #include "GameCore.h"
 
 // standard Nub types
-#define RENDERNUB 1
-#define CONTROLNUB 2
-	// 0 - no type
-	// 1 - rendering nub
-	// 2 - actor/player nub
+#define RENDERNUB 0
+#define CONTROLNUB 1
+	// 0 - rendering nub
+	// 1 - actor/player nub
 typedef struct Nub {
 	int type;
 	void *data;

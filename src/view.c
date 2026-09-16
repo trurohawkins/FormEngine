@@ -93,7 +93,7 @@ void renderWorld() {
 				Cell c = w->map[wp];
 				for (int i = 0; i < FORMS_PER_CELL; i++) {
 					if (c.within[i]) {
-						Nub *skin = findNub(c.within[i], 1);
+						Nub *skin = findNub(c.within[i], RENDERNUB);
 						if (skin && skin->data) {
 							RenderObject *rob = skin->data;
 							if (rob->render && rob->lastRender < visit) {

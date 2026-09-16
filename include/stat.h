@@ -1,7 +1,7 @@
 #pragma once
 #include <FormEngine.h>
 #define EMPTY -42069
-#define STATNUB 3
+#define STATNUB 2
 
 typedef struct {
 	int id;

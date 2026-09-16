@@ -6,9 +6,14 @@ CookBook cookBook = {
 	.nubs = 0,
 };
 
-void initCookBook(int ids) {
+void initCookBook(int ids, int nubs) {
 	cookBook.recipes = calloc(sizeof(FormRecipe), ids);
 	cookBook.ids = ids;
+	cookBook.nubs = max(3, nubs);
+	cookBook.infos = calloc(sizeof(NubInfo), cookBook.nubs);
+	cookBook.infos[0] = (NubInfo){"Render", inspectNub};
+	cookBook.infos[1] = (NubInfo){"Control", inspectNub};
+	cookBook.infos[2] = (NubInfo){"Stats", inspectStats};
 }
 
 void destroyForm(void *form) {
@@ -26,9 +31,12 @@ void freeCookBook() {
 	if (cookBook.recipes != 0) {
 		free(cookBook.recipes);
 		cookBook.recipes = 0;
+		cookBook.ids = 0;
+		free(cookBook.infos);
+		cookBook.infos = 0;
+		cookBook.nubs = 0;
 	}
 }
-
 
 void writeWorld(char *file) {
 	FILE *fptr = fopen(file, "wb");
@@ -51,7 +59,6 @@ void writeWorld(char *file) {
 }
 
 bool loadWorld(char *file) {
-	debugWrite("loading world\n");
 	FILE *fptr = fopen(file, "rb");
 	if (fptr != NULL) {
 		int sizes[3];// = readBinaryInt(fptr, 3);
@@ -84,5 +91,26 @@ bool loadWorld(char *file) {
 		return true;
 	}
 	return false;
+}
+
+int inspectNub(Nub *nub, char *buff, int capacity) {
+	if (nub) {
+		return snprintf(buff, capacity, "%s\n", cookBook.infos[nub->type].type);
+	} else {
+		return 0;
+	}
+}
+
+int inspectStats(Nub *nub, char *buff, int capacity) {
+	int written = 0;
+	if (nub) {
+		Stat *stats = nub->data;
+		int num = stats[0].id;
+		written += snprintf(buff, capacity, "Stats\n", 0);
+		for (int i = 1; i < num; i++) {
+			written += snprintf(buff + written, capacity - written, "  %i: %f\n", stats[i].id, stats[i].value);
+		}
+	}
+	return written;
 }
 

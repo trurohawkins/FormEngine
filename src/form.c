@@ -8,7 +8,7 @@ Form *makeForm(int id) {
 
 Nub *growNub(Form *f) {
 	Nub *nub = calloc(1, sizeof(Nub));
-	nub->type = 0;
+	nub->type = -1;
 	nub->data = f;
 	nub->owned = false;
 	// find empty nub to attach to
@@ -37,7 +37,7 @@ Nub *findNub(Form *f, int type) {
 
 Nub *growRenderNub(Form *f, void *data, void *(*renderFunc)(void*)) {
 	Nub *r = growNub(f);
-	r->type = 1;
+	r->type = RENDERNUB;
 	r->owned = true;
 	RenderObject *rob = calloc(1, sizeof(RenderObject));
 	rob->data = data;
