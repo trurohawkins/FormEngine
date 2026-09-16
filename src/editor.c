@@ -87,20 +87,22 @@ void renderInspector(Editor *e) {
 		Cell *c = getCell(e->cursor.x, e->cursor.y);
 		if (c) {
 			Form *f = c->within[e->curCheck];
-			int capacity = 23 * 29;
-			char buff[capacity];
-			int written = 0;
-			if (f->id < cookBook.ids) {
-				written += snprintf(buff, capacity - written, "%s\n", cookBook.recipes[f->id].type);
-				Stat *stats = getStatBlock(f);
-				if (stats) {
-					int num = stats[0].id;
-					for (int i = 1; i < num; i++) {
-						written += snprintf(buff + written, capacity - written, "%i: %f\n", stats[i].id, stats[i].value);
+			if (f) {
+				int capacity = 23 * 29;
+				char buff[capacity];
+				int written = 0;
+				if (f->id < cookBook.ids) {
+					written += snprintf(buff, capacity - written, "%s\n", cookBook.recipes[f->id].type);
+					Stat *stats = getStatBlock(f);
+					if (stats) {
+						int num = stats[0].id;
+						for (int i = 1; i < num; i++) {
+							written += snprintf(buff + written, capacity - written, "%i: %f\n", stats[i].id, stats[i].value);
+						}
 					}
+					memcpy(reco.data, buff, written);
+					addRenderCommand(reco);
 				}
-				memcpy(reco.data, buff, written);
-				addRenderCommand(reco);
 			}
 		}
 	}

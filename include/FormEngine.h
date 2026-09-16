@@ -7,4 +7,5 @@
 #include "view.h"
 #include "level.h"
 #include "editor.h"
+#include "cookbook.h"
 #include "WorldManager.h"

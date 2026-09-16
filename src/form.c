@@ -1,4 +1,5 @@
 #include "form.h"
+
 Form *makeForm(int id) {
 	Form *form = calloc(1, sizeof(Form));
 	form->id = id;

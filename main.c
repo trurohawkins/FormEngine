@@ -40,8 +40,6 @@ int main(int argc, char **argv) {
 	makeEditorPlayer(e);
 	e->cursor.x = spawnPos[0];
 	e->cursor.y = spawnPos[1];
-
-
 	
 	runWorld();
 	//writeWorld("world.bin");
