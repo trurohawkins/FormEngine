@@ -7,7 +7,7 @@
 #include "guy.c"
 
 int main(int argc, char **argv) {
-	initCookBook(formIDs, 3);
+	initCookBook(formIDs, 3, 0);
 	//FormRecipe guy = {"Guy", makeGuy, freeGuy};
 	cookBook.recipes[0] = (FormRecipe){
 		"Guy", placeGuy, removeForm, freeForm

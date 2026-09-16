@@ -6,7 +6,7 @@ CookBook cookBook = {
 	.nubs = 0,
 };
 
-void initCookBook(int ids, int nubs) {
+void initCookBook(int ids, int nubs, int stats) {
 	cookBook.recipes = calloc(sizeof(FormRecipe), ids);
 	cookBook.ids = ids;
 	cookBook.nubs = max(3, nubs);
@@ -14,6 +14,8 @@ void initCookBook(int ids, int nubs) {
 	cookBook.infos[0] = (NubInfo){"Render", inspectNub};
 	cookBook.infos[1] = (NubInfo){"Control", inspectNub};
 	cookBook.infos[2] = (NubInfo){"Stats", inspectStats};
+	cookBook.names = calloc(sizeof(StatName), stats);
+	cookBook.stats = stats;
 }
 
 void destroyForm(void *form) {
@@ -35,6 +37,9 @@ void freeCookBook() {
 		free(cookBook.infos);
 		cookBook.infos = 0;
 		cookBook.nubs = 0;
+		free(cookBook.names);
+		cookBook.names = 0;
+		cookBook.stats = 0;
 	}
 }
 
@@ -105,10 +110,19 @@ int inspectStats(Nub *nub, char *buff, int capacity) {
 	int written = 0;
 	if (nub) {
 		Stat *stats = nub->data;
-		int num = stats[0].id;
+		int num = stats[0].value;
 		written += snprintf(buff, capacity, "Stats\n", 0);
 		for (int i = 1; i < num; i++) {
-			written += snprintf(buff + written, capacity - written, "  %i: %f\n", stats[i].id, stats[i].value);
+			char *name = 0;
+			if (stats[i].id >= 0 && stats[i].id < cookBook.stats) {
+				name = cookBook.names[stats[i].id].name;
+			}
+			if (name) {
+				written += snprintf(buff + written, capacity - written, "  %s: %f\n", name, stats[i].value);
+
+			} else {
+				written += snprintf(buff + written, capacity - written, "  %i: %f\n", stats[i].id, stats[i].value);
+			}
 		}
 	}
 	return written;

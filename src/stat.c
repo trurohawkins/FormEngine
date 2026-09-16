@@ -1,8 +1,8 @@
 #include "stat.h"
 
 Stat empty = {
-	.id = EMPTY,
-	.value = EMPTY
+	.id = EMPTYSTAT,
+	.value = EMPTYSTAT,
 };
 
 Nub *initStats(Form *f, int numStats) {
@@ -10,20 +10,24 @@ Nub *initStats(Form *f, int numStats) {
 	stat->type = STATNUB;
 	stat->owned = true;
 	Stat *stats = calloc(numStats + 1, sizeof(Stat));
-	stats[0].id = numStats + 1;
-	for (int i = 1; i < stats[0].id; i++) {
+	stats[0].value = numStats + 1;
+	for (int i = 1; i < stats[0].value; i++) {
 		stats[i] = empty;
 	}
 	stat->data = stats;
 	return stat;
 }
 
+bool isEmpty(Stat s) {
+	return s.id == EMPTYSTAT && equal(s.value, EMPTYSTAT);
+}
+
 bool addStat(Form *f, int id, float value) {
 	Nub *stat = findNub(f, STATNUB);
 	if (stat) {
 		Stat *stats = stat->data;
-		for (int i = 1; i < stats[0].id; i++) {
-			if (stats[i].id == EMPTY) {
+		for (int i = 1; i < stats[0].value; i++) {
+			if (isEmpty(stats[i])) {
 				stats[i].id = id;
 				stats[i].value = value;
 				return true;
@@ -37,9 +41,11 @@ float *getStat(Form *f, int id) {
 	Nub *stat = findNub(f, STATNUB);
 	if (stat) {
 		Stat *stats = stat->data;
-		for (int i = 1; i < stats[0].id; i++) {
-			if (stats[i].id != EMPTY && stats[i].id == id) {
-				return &stats[i].value;
+		for (int i = 1; i < stats[0].value; i++) {
+			if (!isEmpty(stats[i])) {
+				if (stats[i].id == id) {
+					return &stats[i].value;
+				}
 			}
 		}
 	}

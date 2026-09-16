@@ -14,15 +14,22 @@ typedef struct {
 } NubInfo;
 
 typedef struct {
+	char *name;
+	int id;
+} StatName;
+
+typedef struct {
 	int ids;
 	FormRecipe *recipes;
 	int nubs;
 	NubInfo *infos;
+	int stats;
+	StatName *names;
 } CookBook;
 extern CookBook cookBook;
 
 //nubs should include the 3 basics nubs + whatever else you created
-void initCookBook(int ids, int nubs);
+void initCookBook(int ids, int nubs, int stats);
 void freeCookBook();
 void writeWorld(char *file);
 bool loadWorld(char *file);
