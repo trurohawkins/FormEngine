@@ -103,6 +103,8 @@ void clearTimedEvents() {
 }
 
 void pauseSet(bool value) {
+	pauseAudioEvents(value);
+	/*
 	for (int i = 0; i < MAX_AUDIO_EVENTS; i++) {
 		if (audioEvents[i] != -1) {
 			if (value) {
@@ -112,6 +114,7 @@ void pauseSet(bool value) {
 			}
 		}
 	}
+	*/
 }
 
 void asciiRenderForm(Form *f, uint8_t r, uint8_t g, uint8_t b) {
