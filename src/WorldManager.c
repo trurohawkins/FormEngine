@@ -7,8 +7,6 @@ pthread_t gameThread;
 pthread_t outputThread;
 
 
-int audioEvents[MAX_AUDIO_EVENTS];
-
 bool startWorld(int graphics, int audio) {
 	srand(time(NULL));
 	initDirections();
@@ -21,14 +19,11 @@ bool startWorld(int graphics, int audio) {
 	if (graphics > 0) {
 		initScreen();
 	}
-	addRenderFunction(formRender);
-	runGraphics = graphics;
 	if (audio > 0) {
 		initAudio();
-		for (int i = 0; i < MAX_AUDIO_EVENTS; i++) {
-			audioEvents[i] = -1;
-		}
 	}
+	addRenderFunction(formRender);
+	runGraphics = graphics;
 	runAudio = audio;
 	pauseFunc = pauseSet;
 
@@ -83,38 +78,8 @@ bool endWorld() {
 	return true;
 }
 
-int addTimedEvent(void (*func)(void *), void *data, double frequency) {
-	int event = scheduleEvent(func, data, frequency);
-	for (int i = 0; i < MAX_AUDIO_EVENTS; i++) {
-		if (audioEvents[i] == -1) {
-			audioEvents[i] = event;
-			return event;
-		}
-	}
-	return -1;
-}
-
-void clearTimedEvents() {
-	for (int i = 0; i < MAX_AUDIO_EVENTS; i++) {
-		if (audioEvents[i] != -1) {
-			unscheduleEvent(audioEvents[i]);
-		}
-	}
-}
-
 void pauseSet(bool value) {
 	pauseAudioEvents(value);
-	/*
-	for (int i = 0; i < MAX_AUDIO_EVENTS; i++) {
-		if (audioEvents[i] != -1) {
-			if (value) {
-				pauseAudioEvent(audioEvents[i]);
-			} else {
-				unpauseAudioEvent(audioEvents[i]);
-			}
-		}
-	}
-	*/
 }
 
 void asciiRenderForm(Form *f, uint8_t r, uint8_t g, uint8_t b) {

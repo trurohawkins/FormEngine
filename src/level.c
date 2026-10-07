@@ -67,7 +67,7 @@ bool loadLevel(int lvl) {
 }
 
 void endLevel() {
-	clearTimedEvents();
+	unscheduleEvents(0);
 	freeWorld();
 	//deleteActorLists();
 }
