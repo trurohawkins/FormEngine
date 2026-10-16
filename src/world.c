@@ -32,6 +32,7 @@ void freeWorld() {
 		}
 		free(theWorld.map);
 		theWorld.map = 0;
+		theWorld.x = theWorld.y = 0;
 	}
 }
 
