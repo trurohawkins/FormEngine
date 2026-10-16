@@ -60,6 +60,7 @@ bool loadLevel(int lvl) {
 			if (level.func) {
 				level.func();
 			}
+			curLevel = lvl;
 			return true;
 		}
 	}
