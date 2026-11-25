@@ -42,8 +42,6 @@ Editor *makeEditor() {
 	editor->inspector = createTextBox(24, 30, "");
 
 	addRenderFunction(renderEditor);//renderThis;
-
-
 	return editor;
 }
 

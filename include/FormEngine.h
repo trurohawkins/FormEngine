@@ -8,4 +8,5 @@
 #include "level.h"
 #include "editor.h"
 #include "cookbook.h"
+#include "debugger.h"
 #include "WorldManager.h"

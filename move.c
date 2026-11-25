@@ -63,9 +63,9 @@ void setMove(Form *f, int axis, int val) {
 			MoveVars *mv = moveNub->data;
 			//get movevars and check if proper axis
 			if (axis >= 0 && axis < 2) {
-				debugWrite("setting move\n");
 				//cur move locked into -1, 0, 1
 				mv->curMove[axis] = sign(val);
+				debugPrintf("setting move axis %i, %i\n", axis, mv->curMove[axis]);
 			}
 		}
 	}

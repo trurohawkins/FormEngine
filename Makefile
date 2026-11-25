@@ -82,7 +82,7 @@ $(AUDIOLIB)lib$(AUDIO).a:
 	$(MAKE) -C $(AUDIODIR)
 
 # Static lib
-$(LIBDIR)libFormEngine.a: form.o cell.o world.o view.o stat.o level.o editor.o WorldManager.o cookbook.o | $(LIBDIR)
+$(LIBDIR)libFormEngine.a: form.o cell.o world.o view.o stat.o level.o editor.o WorldManager.o cookbook.o debugger.o | $(LIBDIR)
 	ar rs $@ $^
 
 # Compiling
@@ -110,6 +110,9 @@ editor.o: $(SRCDIR)editor.c $(INCDIR)editor.h
 
 cookbook.o: $(SRCDIR)cookbook.c $(INCDIR)cookbook.h
 	gcc $(CFLAGS) -c $(SRCDIR)cookbook.c
+
+debugger.o: $(SRCDIR)debugger.c $(INCDIR)debugger.h
+	gcc $(CFLAGS) -c $(SRCDIR)debugger.c
 
 WorldManager.o: $(SRCDIR)WorldManager.c $(INCDIR)WorldManager.h
 	gcc $(CFLAGS) -c $(SRCDIR)WorldManager.c -o $@
