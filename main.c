@@ -18,10 +18,10 @@ int main(int argc, char **argv) {
 	makeLevel("lvl00.bin", 0);
 	makeLevel("lvl01.bin", 0);
 	startWorld(true, true);
-	makeDebugger(0.5, 0.5);
+	makeDebugger(0.15, 0.5);
 	setDebugger(true);
 	int poo = 10;
-	debugPrintf("poo = %i\n", poo);
+	debugPrintf("the dirty mr. fartpoo = %i\n", poo);
 
 	int spawnPos[2] = {worldX/2, worldY/2};
 	//if (!loadLevel(lvl0)) {

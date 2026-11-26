@@ -9,7 +9,7 @@ Form *makeGuy() {
 	//Actor *actor = makeFormActor(guy);
 	Control *con = makeFormControl(guy);
 	con->actor = makeActor(guy);
-	Action *action = makeAction(0, guyAction, guy);
+	Action *action = makeAction(0, guyAction, 0);
 	addAction(con->actor, action);
 	addActor(con->actor);
 

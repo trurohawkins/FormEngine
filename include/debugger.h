@@ -5,6 +5,8 @@ typedef struct {
 	bool on;
 	int textBox;
 	float pos[2];
+	int size[2];
+	int capacity;
 	//temperary need to refactor render commands
 	char *text;
 } Debugger;
